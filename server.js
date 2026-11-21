@@ -3,15 +3,11 @@ const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');
 
-const fs = require('fs');
-const https = require('https');
-const privateKey = fs.readFileSync('localhost+1-key.pem', 'utf8');
-const certificate = fs.readFileSync('localhost+1.pem', 'utf8');
+const http = require('http');
 
-var credentials = { key: privateKey, cert: certificate };
 
 const app = express();
-const server = https.createServer(credentials, app);
+const server = http.createServer(app);
 
 // Configure CORS for Socket.io
 const io = new Server(server, {
@@ -175,7 +171,7 @@ io.on('connection', (socket) => {
 
 // Start the server
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, () => {
   console.log(`Signaling server running on port ${PORT}`);
 });
 
